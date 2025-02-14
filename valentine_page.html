@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Surprise</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: pink;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        #yes {
+            background-color: lightgreen;
+        }
+        #no {
+            background-color: lightcoral;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Will you be my Valentine? 💖</h1>
+    <div class="buttons">
+        <button id="yes" onclick="showSurprise()">Yes</button>
+        <button id="no" onclick="shrinkNo()">No</button>
+    </div>
+    <div id="surprise" class="hidden">
+        <h2>Congratulations, you lucky girl! 🎉</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>
+    </div>
+    
+    <script>
+        let noButton = document.getElementById("no");
+        let yesButton = document.getElementById("yes");
+        let noSize = 20;
+        let yesSize = 20;
+        
+        function shrinkNo() {
+            if (noSize > 5) {
+                noSize -= 5;
+                yesSize += 10;
+                noButton.style.fontSize = noSize + "px";
+                yesButton.style.fontSize = yesSize + "px";
+            } else {
+                noButton.style.display = "none";
+            }
+        }
+        
+        function showSurprise() {
+            document.getElementById("surprise").classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
