@@ -3,115 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
+    <title>Valentine's Day Surprise</title>
     <style>
         body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #ffb6c1;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background: url('https://source.unsplash.com/1600x900/?valentine,hearts') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
+            color: #fff;
         }
-        .container {
-            margin-top: 15vh;
-        }
+
         h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        .buttons {
-            margin-top: 20px;
+
+        .button-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
+
         button {
-            font-size: 1.5em;
+            font-size: 1.5rem;
             padding: 10px 20px;
-            margin: 10px;
             border: none;
             cursor: pointer;
-            border-radius: 25px;
-            transition: all 0.3s ease-in-out;
+            transition: 0.3s ease-in-out;
+            border-radius: 10px;
+            font-weight: bold;
         }
-        #yes {
+
+        #yes-btn {
             background-color: #ff4d6d;
             color: white;
         }
-        #no {
+
+        #no-btn {
             background-color: #444;
             color: white;
         }
-        @keyframes pop {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+
+        #yes-btn:hover {
+            background-color: #ff1e50;
+            transform: scale(1.1);
         }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-            animation: pop 0.3s ease-in-out;
+
+        #no-btn:hover {
+            background-color: #222;
+            transform: scale(1.1);
         }
-        .hearts {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2em;
-            color: pink;
-            opacity: 0;
-            animation: float 1.5s ease-out forwards;
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: floatUp linear infinite;
         }
-        @keyframes float {
-            0% { opacity: 1; transform: translateY(0) scale(0.5); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
         }
+
+        /* Cupid Animation */
+        .cupid {
+            position: absolute;
+            width: 80px;
+            top: 10%;
+            left: 10%;
+            animation: flyAround 10s linear infinite;
+        }
+
+        @keyframes flyAround {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(80vw, 20vh); }
+            50% { transform: translate(50vw, 60vh); }
+            75% { transform: translate(10vw, 40vh); }
+            100% { transform: translate(0, 0); }
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Will you be my Valentine? 💖</h1>
-        <div class="buttons">
-            <button id="yes">Yes</button>
-            <button id="no">No</button>
-        </div>
+    <h1>Will you be my Valentine? 💖</h1>
+
+    <div class="button-container">
+        <button id="yes-btn">Yes</button>
+        <button id="no-btn">No</button>
     </div>
-    <div class="popup" id="popup">
-        <h2>Congratulations, you lucky girl! 🎉💖</h2>
-        <video width="320" height="240" controls>
-            <source src="your-video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Cupid.svg/800px-Cupid.svg.png" class="cupid" alt="Cupid">
+
     <script>
-        let noButton = document.getElementById("no");
-        let yesButton = document.getElementById("yes");
-        let popup = document.getElementById("popup");
-        
-        noButton.addEventListener("click", function() {
-            let currentSize = parseFloat(window.getComputedStyle(noButton).fontSize);
-            let yesSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
-            if (currentSize > 10) {
-                noButton.style.fontSize = (currentSize * 0.8) + "px";
-                yesButton.style.fontSize = (yesSize * 1.2) + "px";
-            } else {
-                noButton.style.display = "none";
+        const yesBtn = document.getElementById("yes-btn");
+        const noBtn = document.getElementById("no-btn");
+
+        noBtn.addEventListener("mouseover", () => {
+            noBtn.style.fontSize = parseFloat(getComputedStyle(noBtn).fontSize) * 0.8 + "px";
+            yesBtn.style.fontSize = parseFloat(getComputedStyle(yesBtn).fontSize) * 1.2 + "px";
+
+            if (parseFloat(getComputedStyle(noBtn).fontSize) < 10) {
+                noBtn.remove();
             }
         });
-        
-        yesButton.addEventListener("click", function() {
-            popup.style.display = "block";
-            let heart = document.createElement("div");
-            heart.innerHTML = "❤️";
-            heart.classList.add("hearts");
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 1500);
+
+        yesBtn.addEventListener("click", () => {
+            alert("🎉 Congratulations, you lucky girl! 💘");
+            const video = document.createElement("video");
+            video.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Replace with your own video link
+            video.autoplay = true;
+            video.controls = true;
+            video.style.position = "fixed";
+            video.style.top = "50%";
+            video.style.left = "50%";
+            video.style.transform = "translate(-50%, -50%)";
+            video.style.width = "80%";
+            document.body.appendChild(video);
         });
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 300);
     </script>
 </body>
 </html>
+
